@@ -24,9 +24,6 @@ class TwitterFeed:
         if new_id > self.current_id:
             self.current_id = new_id
             self.current_status = new_status
-            # TODO remove print statement
-            print(new_status.text)
-            Beep.beep(duration=1)
             return new_status
         else:
             return None
@@ -34,11 +31,18 @@ class TwitterFeed:
 
 def main():
 
-    CNN_feed = TwitterFeed('CNN')
+    every3_minutes_feed = TwitterFeed('Every3Minutes')
 
     while True:
-        CNN_feed.get_new_status()
-        time.sleep(30)
+
+        new_status = every3_minutes_feed.get_new_status()
+
+        if new_status:
+            print(new_status.text)
+            # Beep.beep(duration=1)
+            api.update_status(status=new_status.text)
+
+        time.sleep(60)
 
 
 if __name__ == "__main__":
